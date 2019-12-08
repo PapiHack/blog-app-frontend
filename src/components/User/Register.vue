@@ -56,9 +56,21 @@
             submitRegisterForm(event) {
                 if (this.mdp === this.user.password) {
                     this.userService.add(this.user)
+                    .then(
+                        response => {
+                            let errors = JSON.parse(response.bodyText)
+                            if(response.status == 400) {
+                                'email' in errors ? this.$swal.fire('Erreur', errors.email[0], 'error') : this.$swal.fire('Erreur', errors.login[0], 'error') 
+                            }
+                            else if(response.status == 201) {
+                                this.$swal.fire('Succès', 'Inscription effectué !', 'success')
+                                this.$router.replace({ name: 'Login' })
+                            }
+                        }
+                    )
                 }
                 else {
-                    alert('Erreur au niveau des mots de passe !')
+                    this.$swal.fire('Erreur', 'Erreur au niveau des mots de passe !', 'error')
                 }
             }
         }

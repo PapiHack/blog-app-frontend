@@ -1,9 +1,16 @@
 <template>
   <div>
-    <app-navbar :auth="authenticated"></app-navbar>
+    <app-navbar :auth="authenticated" 
+                @deconnected="onDeconnect"
+                :user="user">
+    </app-navbar>
     <div class="container">
       <div class="row">
-        <router-view :posts="posts"></router-view>
+        <router-view :posts="posts" 
+                     @connected="onConnect"
+                     @addPost="onAddPost"
+                     >
+        </router-view>
       </div>
     </div>
   </div>
@@ -24,20 +31,58 @@
     name: 'app',
     data () {
       return {
-        posts: '',
+        posts: [],
         authenticated: false,
-        user: {},
+        user: '',
         userService: new UserService(this.$http),
         postService: new PostService(this.$http),
       }
     },
     created() {
-      this.posts = this.postService.getAll()
-      console.log(this.postService.getAllPostByUser())
+      this.getPosts()
     },
     methods: {
       setAuthenticated(status) {
         this.authenticated = status
+      },
+      onConnect(user) {
+        console.log('Connected !!!')
+        this.user = user
+        this.setAuthenticated(true)
+        this.$router.replace({ name: 'Home' })
+      },
+      onDeconnect() {
+        console.log('Deconnecting')
+        this.user = {}
+        this.user = ''
+        this.setAuthenticated(false)
+        this.$router.replace({ name: 'Home' })
+      },
+      onAddPost(post) {
+        console.log(this.user.id)
+        let newPost = {
+          titre: post.titre,
+          contenu: post.contenu,
+          auteur: this.user.id
+        }
+        this.postService.add(newPost)
+        .then(
+          response => {
+            console.log(response)
+            if(response.status == 201) {
+              this.getPosts()
+              this.$router.replace({ name: 'Home' })
+            }
+            else
+              this.$swal('Erreur', 'Une erreur est survenue lors de l\'ajout de votre post !', 'error')
+          }
+        )
+      },
+      getPosts() {
+        this.postService.getAll()
+        .then(
+          data => this.posts = data
+        )
       }
     }
   }

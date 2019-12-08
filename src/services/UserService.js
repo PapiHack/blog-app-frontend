@@ -9,42 +9,55 @@ export class UserService {
         console.log('Une erreur est survenue lors de la requête => ' + error)
     }
 
-    getAll() {
+    async getAll() {
+        // return this.HttpClient.get('users/')
+        // .then(
+        //     response => {
+        //         let users = []
+        //         const { results } = response.body
+        //         for(let result of results) {
+        //             users.push(new User(result.id, result.login, result.password, 
+        //                 result.nom, result.prenom, result.email, result.created_at))
+        //         }
+        //         return users
+        //     },
+        //     error => this.displayError(error)
+        // )
+        // return users
         let users = []
-        this.HttpClient.get('users')
-        .then(
-            response => {
-                const { results } = response.body
-                for(let i = 0; i < results.length; i++) {
-                    users.push(new User(results[i].id, results[i].login, results[i].password, 
-                        results[i].nom, results[i].prenom, results[i].email, 
-                        results[i].created_at))
-                }
-            },
-            error => this.displayError(error)
-        )
+        let response 
+        try {
+            response = await this.HttpClient.get('users/')
+        }
+        catch(er) {
+            this.displayError(er)
+        }
+        let data = await response.json()
+        const { results } = data
+        for (let result of results) {
+            users.push(new User(result.id, result.login, result.password,
+                result.nom, result.prenom, result.email, result.created_at))
+        }
         return users
     }
 
     get(id) {
-        let user = []
-        this.HttpClient.get(`users/${id}`)
-        .then((function(response) {
-            const { body } = response
-             let u = new User(body.id, body.login, body.password, 
-                body.nom, body.prenom, body.email, body.created_at)
-                user.push(u)
-            }),
-                error => this.displayError(error)
+        return this.HttpClient.get(`users/${id}/`)
+        .then(
+            response => {
+                const { body } = response
+                return new User(body.id, body.login, body.password, body.nom, 
+                    body.prenom, body.email, body.created_at)
+            },
+            error => this.displayError(error)
         )
-        return user
     }
 
     add(user) {
-        this.HttpClient.post('users', user)
+        return this.HttpClient.post('users/', user)
         .then(
-            response => console.log(response),
-            error => console.log(error)
+            response => response,
+            error => error
         )
     }
 }

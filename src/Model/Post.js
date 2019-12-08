@@ -18,11 +18,11 @@ export class Post {
             this.like--
     }
 
-    increaseDisike() {
+    increaseDislike() {
         this.dislike++
     }
 
-    decreaseDisike() {
+    decreaseDislike() {
         if (this.dislike > 0)
             this.dislike--
     }

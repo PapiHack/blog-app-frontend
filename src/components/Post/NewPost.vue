@@ -9,7 +9,7 @@
                     </div>
                     <div class="form-group">
                         <label for="contenu">Contenu</label>
-                        <textarea name="contenu" id="contenu" required cols="66" rows="10" v-model="post.contenu"></textarea>
+                        <textarea name="contenu" class="form-control" id="contenu" required cols="66" rows="10" v-model="post.contenu"></textarea>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">Soumettre</button>
@@ -27,12 +27,15 @@
     export default {
         data() {
             return {
-                post: Post
+                post: {
+                    titre: '',
+                    contenu: ''
+                }
             }
         },
         methods: {
-            submitPostAddForm(event) {
-                console.log(event)
+            submitPostAddForm() {
+                this.$emit('addPost', this.post)
             }
         }    
     }

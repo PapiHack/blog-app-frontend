@@ -22,19 +22,39 @@
 </template>
 
 <script>
+    import { UserService } from '../../services/UserService'
+
     export default {
         data() {
             return {
                 userLoginInfo: {
                     login: '',
                     password: ''
-                }
+                },
+                users: [],
+                userService: new UserService(this.$http)
             }
         },
         methods: {
-            submitLoginForm(event) {
-                console.log(this.userLoginInfo)
+            submitLoginForm() {
+                let connected = false
+                for (let user of this.users) {
+                    if(user.login == this.userLoginInfo.login && user.password == this.userLoginInfo.password) {
+                        this.$emit('connected', user)
+                        console.log('BON')
+                        connected = true
+                        break
+                    }
+                }
+                if(!connected)
+                    this.$swal('Login ou mot de passe incorrecte!')
             }
+        },
+        created() {
+            this.userService.getAll()
+            .then(
+                data => this.users = data
+            )
         }
     }
 </script>
