@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-navbar></app-navbar>
+    <app-navbar :auth="authenticated"></app-navbar>
     <div class="container">
       <div class="row">
         <router-view :posts="posts"></router-view>
@@ -13,6 +13,8 @@
   import Navbar from './components/Shared/Navbar'
   import PostList from './components/Post/PostList'
   import { Post } from './Model/Post'
+  import { UserService } from './services/UserService'
+  import { PostService } from './services/PostService'
 
   export default {
     components: {
@@ -22,22 +24,21 @@
     name: 'app',
     data () {
       return {
-        posts: [
-          new Post(1, 'first post', 'this is the first post', 'papi', new Date().toLocaleString()),
-          new Post(2, 'second post', 'this is the second post', 'toto', new Date().toLocaleString()),
-          new Post(3, 'third post', 'this is the third post', 'fenek', new Date().toLocaleString()),
-          new Post(4, 'fourth post', 'this is the fourth post', 'fenek', new Date().toLocaleString()),
-        ]
+        posts: '',
+        authenticated: false,
+        user: {},
+        userService: new UserService(this.$http),
+        postService: new PostService(this.$http),
       }
     },
     created() {
-      this.$http.get('http://localhost:8000/articles')
-      .then(
-        response => {
-          console.log(response.body.results)
-        },
-        error => console.log(error)
-      )
+      this.posts = this.postService.getAll()
+      console.log(this.postService.getAllPostByUser())
+    },
+    methods: {
+      setAuthenticated(status) {
+        this.authenticated = status
+      }
     }
   }
 </script>

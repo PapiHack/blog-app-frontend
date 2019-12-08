@@ -9,18 +9,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <router-link to="/"><a class="navbar-brand">Blog</a></router-link>
+      <router-link :to="{ name: 'Home' }"><a class="navbar-brand">Blog</a></router-link>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <router-link to="/" tag="li" active-class="active" exact><a>Accueil</a></router-link>
-        <router-link to="/nouveau-post" tag="li" active-class="active" exact><a>Nouveau Post</a></router-link>
+        <router-link :to="{ name: 'Home' }" tag="li" active-class="active" exact><a>Accueil</a></router-link>
+        <router-link :to="{ name: 'NewPost' }" tag="li" active-class="active" exact><a>Nouveau Post</a></router-link>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <router-link to="/register" tag="li" active-class="active" exact><a>Inscription</a></router-link>
-        <router-link to="/login" tag="li" active-class="active" exact><a>Connexion</a></router-link>
+        <router-link :to="{ name: 'About' }" tag="li" active-class="active" exact><a>A Propos</a></router-link>
+        <router-link :to="{ name: 'Register' }" tag="li" active-class="active" exact><a>Inscription</a></router-link>
+        <router-link :to="{ name: 'Login' }" tag="li" active-class="active" exact><a>Connexion</a></router-link>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -36,6 +37,11 @@
 
 <script>
     export default {
-        
+        props: {
+          auth: {
+            required: false,
+            type: Boolean
+          }
+        }
     }
 </script>

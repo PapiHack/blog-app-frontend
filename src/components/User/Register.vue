@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <form>
+                <form @submit.prevent="submitRegisterForm">
                     <div class="form-group">
                         <label for="nom">Nom</label>
                         <input type="text" required v-model="user.nom" name="nom" id="nom" class="form-control"/>
@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" required v-model="user.email" name="email" id="email" class="form-control"/>
+                        <input type="email" required v-model="user.email" name="email" id="email" class="form-control"/>
                     </div>
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         <label for="mdp">Confirmer mot de passe</label>
-                        <input type="text" required v-model="mdp" name="mdp" id="mdp" class="form-control"/>
+                        <input type="password" required v-model="mdp" name="mdp" id="mdp" class="form-control"/>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">Valider</button>
@@ -39,11 +39,27 @@
 
 <script>
     import { User } from '../../Model/User'
+    import { UserService } from '../../services/UserService'
+
     export default {
         data() {
             return {
-                user: User,
-                mdp: ''
+                user: {
+                    login: '', password: '', email: '',
+                    nom: '', prenom: ''
+                },
+                mdp: '',
+                userService: new UserService(this.$http)
+            }
+        },
+        methods: {
+            submitRegisterForm(event) {
+                if (this.mdp === this.user.password) {
+                    this.userService.add(this.user)
+                }
+                else {
+                    alert('Erreur au niveau des mots de passe !')
+                }
             }
         }
     }

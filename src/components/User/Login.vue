@@ -9,7 +9,7 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
-                        <input type="text" id="password" name="password" class="form-control" v-model="userLoginInfo.password" />
+                        <input type="password" id="password" name="password" class="form-control" v-model="userLoginInfo.password" />
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">Se connecter</button>
@@ -33,7 +33,7 @@
         },
         methods: {
             submitLoginForm(event) {
-                console.log(event)
+                console.log(this.userLoginInfo)
             }
         }
     }

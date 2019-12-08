@@ -4,7 +4,7 @@
             <h3> {{ post.titre }} </h3>
             
             <p> {{ post.contenu }} 
-                <span class="pull-right">Par <strong>{{ post.auteur }}</strong>, le {{ post.created_at }}</span>
+                <span class="pull-right">Par <strong>{{ post.auteur }}</strong>, le {{ post.created_at|formatDate}}</span>
             </p>
             <div>
                 <button class="btn btn-success">J'aime <i class="fa fa-thumbs-up"></i></button>
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+    import moment from 'moment' 
     export default {
         props: {
             post: {
