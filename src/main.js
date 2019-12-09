@@ -18,7 +18,7 @@ const router = new VueRouter({
 })
 
 // I confgure here root API endpoint
-Vue.http.options.root = 'http://localhost:8000/'
+// Vue.http.options.root = 'http://localhost:8000/'
 
 //I create a date filter here (for formatting date from backend API)
 Vue.filter('formatDate', value => {

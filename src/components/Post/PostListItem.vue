@@ -11,7 +11,7 @@
                 <button class="btn btn-danger" @click="dislike">J'aime pas <i class="fa fa-thumbs-down"></i></button>
             </div>
         </article>
-    </div>
+    </div>  
 </template>
 
 <script>

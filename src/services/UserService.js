@@ -1,5 +1,7 @@
 import { User } from '../Model/User'
 
+const apiUrl = 'http://localhost:8000/users'
+
 export class UserService {
     constructor(HttpClient) {
         this.HttpClient = HttpClient
@@ -27,7 +29,7 @@ export class UserService {
         let users = []
         let response 
         try {
-            response = await this.HttpClient.get('users/')
+            response = await this.HttpClient.get(`${apiUrl}`)
         }
         catch(er) {
             this.displayError(er)
@@ -42,7 +44,7 @@ export class UserService {
     }
 
     get(id) {
-        return this.HttpClient.get(`users/${id}/`)
+        return this.HttpClient.get(`${apiUrl}/${id}/`)
         .then(
             response => {
                 const { body } = response
@@ -54,7 +56,7 @@ export class UserService {
     }
 
     add(user) {
-        return this.HttpClient.post('users/', user)
+        return this.HttpClient.post(`${apiUrl}`, user)
         .then(
             response => response,
             error => error

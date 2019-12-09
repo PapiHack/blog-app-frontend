@@ -1,6 +1,8 @@
 import { Post } from '../Model/Post'
 import { UserService } from './UserService'
 
+const apiUrl = 'http://localhost:8000/articles'
+
 export class PostService {
     constructor(HttpClient) {
         this.HttpClient = HttpClient
@@ -15,7 +17,7 @@ export class PostService {
         let posts = []
         let response
         try {
-            response = await this.HttpClient.get('articles/')
+            response = await this.HttpClient.get(`${apiUrl}/`)
         }
         catch(er) {
             this.displayError(er)
@@ -32,7 +34,7 @@ export class PostService {
     }
 
     get(id) {
-        return this.HttpClient.get(`articles/${id}/`)
+        return this.HttpClient.get(`${apiUrl}/${id}/`)
         .then(
             response => {
                 const { body } = response
@@ -44,7 +46,7 @@ export class PostService {
     }
 
     add(post) {
-        return this.HttpClient.post('articles/', post)
+        return this.HttpClient.post(`${apiUrl}/`, post)
         .then(
             response => response,
             error => error
